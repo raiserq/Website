@@ -83,7 +83,7 @@ body{
 }
 
 main{
-  padding:32px 6vw 80px;
+  padding:10px 6vw 80px;
 }
 
 .hero{
@@ -171,7 +171,7 @@ main{
 }
 
 .hero-image{
-  height:280px;
+  height:40px;
   background:
     radial-gradient(circle at 20% 20%, rgba(255,255,255,.7) 0%, rgba(255,255,255,0) 55%),
     linear-gradient(135deg, rgba(31,27,22,.18), rgba(186,122,42,.22)),
