@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>商品详情</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a href="index.html" style="text-decoration:none;color:inherit">← 返回</a>
+    <h1>商品详情</h1>
+    <div></div>
+  </header>
+
+  <main id="product-detail" class="product-detail">
+    <p>正在加载商品...</p>
+  </main>
+
+  <footer class="site-footer">© 2026 商品展示示例</footer>
+
+  <script>
+    function money(n){ return '¥' + Number(n).toLocaleString('zh-CN'); }
+    function escapeHtml(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'})[c]); }
+
+    async function loadProduct(){
+      const params = new URLSearchParams(location.search);
+      const id = params.get('id');
+      const container = document.getElementById('product-detail');
+      if(!id){ container.innerHTML = '<p>未提供商品 ID。</p>'; return }
+      try{
+        const res = await fetch('data/products.json');
+        const data = await res.json();
+        const p = data.find(x=>x.id === id);
+        if(!p){ container.innerHTML = '<p>未找到该商品。</p>'; return }
+
+        container.innerHTML = `
+          <article class="card detail-card">
+            <img src="${p.image}" alt="${escapeHtml(p.title)}">
+            <div class="card-body">
+              <h2 class="card-title">${escapeHtml(p.title)}</h2>
+              <p class="card-desc">${escapeHtml(p.description)}</p>
+            </div>
+            <div class="card-footer">
+              <div class="price">${money(p.price)}</div>
+              <button class="buy" onclick="alert('购买流程示例：' + '${escapeHtml(p.title)}')">购买</button>
+            </div>
+          </article>
+        `;
+      }catch(err){
+        console.error(err);
+        container.innerHTML = '<p>加载商品数据出错。</p>';
+      }
+    }
+
+    loadProduct();
+  </script>
+</body>
+</html>
